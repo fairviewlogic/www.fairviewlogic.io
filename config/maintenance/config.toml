@@ -1,0 +1,26 @@
+baseURL = "/maintenance/"
+languageCode = "en-gb"
+title = "Hugo Hero Theme"
+themesDir = "themes"
+theme = "hugo-hero-theme"
+disableKinds = ["page", "home", "section", "taxonomy", "term", "RSS", "sitemap", "robotsTXT", "404"]
+
+ignore here: only leave maintenance
+setup the main page and 404 with same reference in google bucket settings...
+
+[module]
+  [module.hugoVersion]
+    extended = true
+    min = "0.92.0"
+    
+[params]
+  google_analytics_id=""
+
+  [params.logo]
+    mobile = "images/logo-mobile.svg"
+    mobile_height = "36px"
+    mobile_width = "36px"
+    desktop = "images/logo.svg"
+    desktop_height = "29px"
+    desktop_width = "217px"
+    alt = "Hugo Hero"
