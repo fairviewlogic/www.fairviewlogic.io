@@ -1,12 +1,14 @@
 baseURL = "/maintenance/"
-languageCode = "en-gb"
-title = "Hugo Hero Theme"
+locale = "en-gb"
+title = "Fairview Logic"
 themesDir = "themes"
 theme = "hugo-hero-theme"
-disableKinds = ["page", "home", "section", "taxonomy", "term", "RSS", "sitemap", "robotsTXT", "404"]
+disableKinds = ["page", "section", "taxonomy", "term", "RSS", "sitemap", "robotsTXT", "404"]
 
-ignore here: only leave maintenance
-setup the main page and 404 with same reference in google bucket settings...
+# Builds a single maintenance/holding page only. Switch to this config by
+# running: hugo --environment maintenance --minify
+# Point the bucket / Pages host's index and 404 at the same generated page
+# while the main site is offline.
 
 [module]
   [module.hugoVersion]
@@ -17,10 +19,10 @@ setup the main page and 404 with same reference in google bucket settings...
   google_analytics_id=""
 
   [params.logo]
-    mobile = "images/logo-mobile.svg"
+    mobile = "images/fl-logo-mobile.svg"
     mobile_height = "36px"
     mobile_width = "36px"
-    desktop = "images/logo.svg"
+    desktop = "images/fl-logo.svg"
     desktop_height = "29px"
     desktop_width = "217px"
-    alt = "Hugo Hero"
+    alt = "Fairview Logic"

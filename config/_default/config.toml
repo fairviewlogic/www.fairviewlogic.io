@@ -1,6 +1,6 @@
-baseURL = "/"
-languageCode = "en-gb"
-title = "Hugo Hero Theme"
+baseURL = "https://www.fairviewlogic.io/"
+locale = "en-gb"
+title = "Fairview Logic"
 themesDir = "themes"
 theme = "hugo-hero-theme"
 
@@ -22,15 +22,15 @@ theme = "hugo-hero-theme"
     alt = "Hugo Hero"
 
   [params.homepage_meta_tags]
-    meta_description = "Hero is a multipurpose Hugo theme with fullscreen hero images and page sections. It contains content types for a business or portfolio site."
-    meta_og_title = "Hugo Hero Theme"
+    meta_description = ""
+    meta_og_title = "Fairview Logic"
     meta_og_type = "website"
-    meta_og_url = "https://hugo-hero.netlify.app"
-    meta_og_image = "https://raw.githubusercontent.com/JugglerX/hugo-hero-theme/master/images/tn.png"
-    meta_og_description = "Hero is a multipurpose Hugo theme with fullscreen hero images and page sections. It contains content types for a business or portfolio site."
+    meta_og_url = "https://www.fairviewlogic.io"
+    meta_og_image = ""
+    meta_og_description = ""
     meta_twitter_card = "summary"
-    meta_twitter_site = "@zerostaticio"
-    meta_twitter_creator = "@zerostaticio"
+    meta_twitter_site = ""
+    meta_twitter_creator = ""
 
 [[menu.main]]
 	name = "Services"
@@ -59,4 +59,4 @@ theme = "hugo-hero-theme"
 
 [permalinks]
   post = "/:year/:month/:day/:slug/"
-  pages = "/:filename/"
+  pages = "/:contentbasename/"
