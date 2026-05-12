@@ -1,26 +1,24 @@
-# www.fairviewlogic.com
+# www.fairviewlogic.io
 
-Hosted directly from GCP bucket: https://cloud.google.com/storage/docs/hosting-static-website
+Fairview Logic company site.
 
-Deployed on push to main via GitHub action: https://gohugo.io/hosting-and-deployment/hugo-deploy/
+Built with [Hugo](https://gohugo.io/) on the [Hugoplate](https://github.com/zeon-studio/hugoplate) starter template (Hugo + Tailwind CSS v4).
 
-## Built with Hugo
+## Prerequisites
 
-https://gohugo.io/
+- Hugo Extended >= 0.158
+- Node >= 22
+- Go >= 1.24 (used by Hugo Modules internally)
 
-Theme: https://themes.gohugo.io/themes/hugo-hero-theme
+## Develop
 
-## Stock images
+```sh
+npm install     # one-time, installs Tailwind toolchain
+npm run dev     # local server on http://localhost:1313
+```
 
-https://unsplash.com/s/photos/maintenance
+## Build
 
-# TODO
-
-- move site data into www dir
-- create deploy dir
-- create static maintenance page (not related to theme)
-- deploy static maintenance page
-- add content
-- deploy site
-- add to github
-- add GHA to deploy
+```sh
+npm run build   # produces ./public/
+```
