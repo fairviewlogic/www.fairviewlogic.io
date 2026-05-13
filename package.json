@@ -1,9 +1,9 @@
 {
-  "name": "hugoplate",
-  "description": "hugo tailwindcss boilerplate",
-  "version": "3.5.0",
+  "name": "www.fairviewlogic.io",
+  "description": "Fairview Logic company site (built on Hugoplate)",
+  "version": "0.1.0",
   "license": "MIT",
-  "author": "zeon.studio",
+  "author": "Fairview Logic",
   "scripts": {
     "dev": "concurrently \"node scripts/themeGenerator.js --watch\" \"hugo server\"",
     "build": "node scripts/themeGenerator.js && hugo --gc --minify --templateMetrics --templateMetricsHints --forceSyncStatic",
