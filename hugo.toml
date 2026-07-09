@@ -18,6 +18,11 @@ defaultContentLanguage = 'en'
 # defaultContentLanguageInSubdir need to be true if you want to use the language code as a subdirectory and language specific 404 page
 defaultContentLanguageInSubdir = false
 
+# Maintenance mode: only render the homepage + 404. All other page
+# kinds are disabled so subpages 404 to our custom maintenance page.
+# Remove these lines when the real site is ready to launch.
+disableKinds = ["page", "section", "taxonomy", "term", "RSS", "sitemap"]
+
 ########################### Services #############################
 [services]
 [services.googleAnalytics]
