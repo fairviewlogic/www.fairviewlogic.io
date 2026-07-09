@@ -1,78 +1,83 @@
-# workflow for building and deploying to GitHub Pages
-name: Deploy Hugo site to Pages
+name: Deploy www to Pages
+
+# Rewritten from Hugoplate's inherited workflow. Fixes:
+# - Removed 'npm run project-setup' — already done locally, re-running
+#   in CI reorganises the repo again and breaks the build
+# - Removed hard-coded wget installs for Hugo/Go with a mismatched
+#   ARM/AMD tarball; use setup-* actions with correct arch detection
+# - Removed unused TINA_* env vars (TinaCMS not integrated)
+# - Bumped Hugo 0.158.0 -> 0.161.1, Go 1.23.3 -> 1.25
+# - Added workflow_dispatch for manual retry, plus a pages concurrency
+#   group so overlapping deploys queue instead of racing
 
 on:
-  # Runs on pushes targeting the default branch
   push:
-    branches: ["main"]
+    branches: [main]
+  workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Default to bash
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 defaults:
   run:
     shell: bash
 
-# Environment variables available to all jobs and steps in this workflow
-env:
-  HUGO_ENV: production
-  HUGO_VERSION: "0.158.0"
-  GO_VERSION: "1.23.3"
-  TINA_CLIENT_ID: ${{ secrets.TINA_CLIENT_ID }}
-  TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
-  TINA_SEARCH_TOKEN: ${{ secrets.TINA_SEARCH_TOKEN }}
-
 jobs:
-  # Build job
   build:
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-latest
     steps:
-      - name: Install Hugo
-        run: |
-          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-arm64.deb \
-          && sudo dpkg -i ${{ runner.temp }}/hugo.deb
+      - uses: actions/checkout@v4
 
-      - name: Install Go
-        run: |
-          wget -O ${{ runner.temp }}/go.deb https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz \
-          && sudo tar -C /usr/local -xzf ${{ runner.temp }}/go.deb
-
-      - name: Checkout
-        uses: actions/checkout@v4.2.2
+      - uses: actions/setup-node@v4
         with:
-          submodules: recursive
-          fetch-depth: 0
+          node-version: '22'
 
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v5
+      # Hugoplate declares ~25 gethugothemes/hugo-modules/* dependencies
+      # in go.mod — resolved at build time.
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
 
-      - name: Setup Project
-        run: npm run project-setup
+      - uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.161.1'
+          extended: true
 
+      # package-lock.json is .gitignore'd by Hugoplate's default, so npm ci
+      # would fail. Switch to npm ci here once we commit the lockfile.
       - name: Install npm dependencies
         run: npm install
 
-      - name: Build site
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      # `npm run build` = themeGenerator.js (Tailwind extraction) then
+      # `hugo --gc --minify --templateMetrics --templateMetricsHints
+      #  --forceSyncStatic`. Do NOT call bare `hugo` here — the CSS
+      # would be stale.
+      - name: Build with Hugo (via Hugoplate's npm chain)
+        env:
+          HUGO_ENVIRONMENT: production
         run: npm run build
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3.0.1
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./public
 
-  # Deployment job
   deploy:
+    needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-24.04-arm
-    needs: build
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4.0.5
+        uses: actions/deploy-pages@v4
